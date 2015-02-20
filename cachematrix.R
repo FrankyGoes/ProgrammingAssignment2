@@ -61,3 +61,6 @@ mat <- matrix(c(1, 2, 3, 4), 2, 2)
 x <- makeCacheMatrix(mat)
 x$get()
 cacheSolve(x)
+cacheSolve(x)
+
+
