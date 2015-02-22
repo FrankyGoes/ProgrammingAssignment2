@@ -1,30 +1,29 @@
-# function makeCacheMatrix creates a special matrix,
-# list containing a function of:
-# set the value of the matrix
-# get the value of the matrix
-# setSolve the value of the inverse
-# getSolve the value of the inverse
-# It is storing a numeric matrix and cache's its inverse
+# function makeCacheMatrix creates a special matrix. A list of functions:
+# set the value of the matrix, get the value of the matrix,
+# setSolve the value of the inverse, getSolve the cache value of the inverse.
+# It is storing a numeric matrix and cache's its inverse.
 
 makeCacheMatrix <- function(x = matrix()) {
     # if (det(x) == 0) print("A matrix is inversible if and only if
     # its determinant is non-zero!")
+    # or stopifnot(det(x) == 0)
+
     inverse <- NULL # inverse is initialise
 
     # assign a value to an object in an environment that is different
+    # from the current environment.
     set <- function(y) {
-        x <<- y  # push "x" out of is lexical scope! (Global variable)
-        inverse <<- NULL # inverse matrix is becoming global & initialise
+        x <<- y  # push "x" out of is lexical scope (Global variable)
+        inverse <<- NULL # inverse matrix becaomes global & initialise
     }
 
     get <- function() x # just get the matrix x
-    # simply return the value x in its lexical scope
 
     setSolve <- function(solve) {
-        inverse <<- solve  # inverse is globalise
+        inverse <<- solve  # cache inverse for future use.
     }
 
-    getSolve <- function() inverse     # get the inverse
+    getSolve <- function() inverse  # return inverse cached or NULL if no value
 
     # Define the new 4 list objects
     # Can be call as a list i.e. var$get()
@@ -35,11 +34,9 @@ makeCacheMatrix <- function(x = matrix()) {
     )
 }
 
-# calculates the inverse of the matrix created with makeCacheMatrix
-# looked up in the cache rather than redoing the calculation
-# take advantage of the scoping rules of R # to preserve state
-# inside of an object.
-
+# - calculates the inverse of the matrix created with makeCacheMatrix
+# - looked up in the cache rather than redoing the calculation
+# - take advantage of the scoping rules to preserve state inside of an object.
 cacheSolve <- function(x, ...) {
     inverse <- x$getSolve()
 
@@ -47,10 +44,10 @@ cacheSolve <- function(x, ...) {
         message("getting cached data of inverse matrix")
         return(inverse) # return inverse
     }
-    data <- x$get() #get the matrix
+    data <- x$get() # get the matrix
 
     # Computing the inverse of a square matrix
-    # can be done with the solve function
+    # can be done with the solve() function
     inverse <- solve(data, ...) # solve matrix to inverse. Return its inverse.
     x$setSolve(inverse)
     inverse
